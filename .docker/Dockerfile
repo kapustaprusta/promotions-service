@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ./cmd/port-service/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ./cmd/promotions_service/main.go
 
 # Create a minimal production image
 FROM alpine:latest
@@ -34,7 +34,7 @@ WORKDIR /app
 COPY --from=builder /app/app .
 
 # Set any environment variables required by the application
-ENV HTTP_ADDR=:10100
+ENV BIND_ADDR=:10100
 
 # Expose the port that the application listens on
 EXPOSE 10100

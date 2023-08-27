@@ -1,13 +1,13 @@
-.PHONY: run build test lint docker-compose
+.PHONY: run build test lint compose
 
 # Service port
 PORT ?= 10100
 
 run:
-	HTTP_ADDR=:$(PORT) go run "cmd/promotions-service/main.go"
+	HTTP_ADDR=:$(PORT) go run "cmd/promotions_service/main.go"
 
 build:
-	go build -o ".bin/promotions-service" "cmd/promotions-service/main.go"
+	go build -o ".bin/promotions_service" "cmd/promotions_service/main.go"
 
 test:
 	go test -race ./...
@@ -15,5 +15,5 @@ test:
 lint:
 	golangci-lint run -c .golangci.yml -v ./...
 
-docker-compose:
+compose:
 	docker-compose up  --remove-orphans --build
