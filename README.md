@@ -1,6 +1,40 @@
-### Application exposes an REST API for uploading and retrieving promotions
+# promotions-service
+Application exposes REST API for uploading and retrieving promotions
 
-#### Upload Promotions
+## Download
+To download the application repository you should launch the next command
+```
+git clone git@github.com:kapustaprusta/promotions-service.git promotions-service
+```
+
+## Build
+To build the application you should launch the next commands
+```
+cd promotions-service
+make build
+```
+
+## Test
+To run of all tests you should launch the next command
+```
+make test
+```
+
+## Lint
+To run linter you should launch the next command
+```
+make lint
+````
+
+## Compose
+To build and run docker image you should launch the next command
+```
+make compose
+````
+
+## How it works
+
+### Upload Promotions
 
 Endpoint: `POST /promotions`
 
@@ -29,7 +63,7 @@ Responses
 }
 ```
 
-#### Get promotion
+### Get promotion
 
 Endpoint: `GET /promotions/{record_id}`
 
@@ -38,7 +72,7 @@ Request
 curl http://localhost:10100/promotions/1
 ```
 
-#### Response
+Response
 ```sh
 200 - OK
 {
