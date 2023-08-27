@@ -10,7 +10,7 @@ import (
 type PromotionModel struct {
 	ID             string
 	Price          float64
-	CreatedAt      time.Time
+	CreatedAt      time.Time `json:"-"`
 	ExpirationDate time.Time
 }
 
