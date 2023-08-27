@@ -14,8 +14,8 @@ const (
 	timeLayout = "2006-01-02 15:04:05 -0700 MST"
 )
 
-// ReadPromotionsStream reads promotion from provided reader and sends them to chan.
-func ReadPromotionsStream(ctx context.Context, reader io.Reader, outputCh chan<- *PromotionModel) error {
+// ReadPromotionsCsvStream reads promotion from provided reader and sends them to chan.
+func ReadPromotionsCsvStream(ctx context.Context, reader io.Reader, outputCh chan<- *PromotionModel) error {
 	csvReader := csv.NewReader(reader)
 	for {
 		// Check if context is cancelled.
@@ -37,7 +37,7 @@ func ReadPromotionsStream(ctx context.Context, reader io.Reader, outputCh chan<-
 			return errors.New("failed to parse promotion: too few properties")
 		}
 
-		// Read the port and send it to the channel.
+		// Read promotion and send it to the channel.
 		promotionModel := &PromotionModel{}
 		promotionModel.ID = promotionProps[0]
 

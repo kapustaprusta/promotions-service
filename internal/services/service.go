@@ -2,13 +2,14 @@ package services
 
 import (
 	"context"
+
 	"github.com/kapustaprusta/promotions-service/v2/internal/domain"
 )
 
 // PromotionRepository declares interface for promotion repository
 type PromotionRepository interface {
 	TruncateAll(context.Context) error
-	Insert(context.Context, *domain.PromotionModel) error
+	Insert(context.Context, *domain.PromotionModel) (int, error)
 	FindByRecordID(context.Context, int) (*domain.PromotionModel, error)
 }
 
@@ -30,7 +31,7 @@ func (s *PromotionService) TruncateAll(ctx context.Context) error {
 }
 
 // Insert inserts promotion into repository
-func (s *PromotionService) Insert(ctx context.Context, promotion *domain.PromotionModel) error {
+func (s *PromotionService) Insert(ctx context.Context, promotion *domain.PromotionModel) (int, error) {
 	return s.repository.Insert(ctx, promotion)
 }
 

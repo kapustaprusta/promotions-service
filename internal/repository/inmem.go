@@ -37,9 +37,9 @@ func (s *InMemPromotionRepository) TruncateAll(_ context.Context) error {
 }
 
 // Insert inserts promotion into repository
-func (s *InMemPromotionRepository) Insert(_ context.Context, promotion *domain.PromotionModel) error {
+func (s *InMemPromotionRepository) Insert(_ context.Context, promotion *domain.PromotionModel) (int, error) {
 	if promotion == nil {
-		return fmt.Errorf(
+		return -1, fmt.Errorf(
 			"%w: promotion cannot be nil",
 			ErrNilValue,
 		)
@@ -52,7 +52,7 @@ func (s *InMemPromotionRepository) Insert(_ context.Context, promotion *domain.P
 	_ = promotion.SetCreatedAt(time.Now())
 	s.promotions[nextRecordID] = promotion
 
-	return nil
+	return nextRecordID, nil
 }
 
 // FindByRecordID finds promotion in repository by record ID

@@ -6,7 +6,7 @@ import (
 	serviceConfig "github.com/kapustaprusta/promotions-service/v2/internal/config"
 	"github.com/kapustaprusta/promotions-service/v2/internal/repository"
 	"github.com/kapustaprusta/promotions-service/v2/internal/services"
-	httpTransport "github.com/kapustaprusta/promotions-service/v2/internal/transport/http"
+	httpTransport "github.com/kapustaprusta/promotions-service/v2/internal/transport/http_transport"
 )
 
 func main() {

@@ -1,7 +1,6 @@
-package http
+package http_transport
 
 import (
-	"context"
 	"errors"
 	"log"
 	"net/http"
@@ -9,29 +8,21 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/kapustaprusta/promotions-service/v2/internal/config"
-	"github.com/kapustaprusta/promotions-service/v2/internal/domain"
 	"github.com/kapustaprusta/promotions-service/v2/internal/repository"
 	"github.com/kapustaprusta/promotions-service/v2/internal/transport"
 )
 
-// PromotionService declares interface for promotion services
-type PromotionService interface {
-	TruncateAll(context.Context) error
-	Insert(context.Context, *domain.PromotionModel) error
-	FindByRecordID(context.Context, int) (*domain.PromotionModel, error)
-}
-
 type apiServer struct {
 	router           *mux.Router
-	promotionService PromotionService
+	promotionService transport.PromotionService
 }
 
 // Start launches api server
-func Start(config *config.Config, promotionService PromotionService) error {
+func Start(config *config.Config, promotionService transport.PromotionService) error {
 	return http.ListenAndServe(config.BindAddr, newAPIServer(promotionService))
 }
 
-func newAPIServer(promotionService PromotionService) *apiServer {
+func newAPIServer(promotionService transport.PromotionService) *apiServer {
 	s := &apiServer{
 		router:           mux.NewRouter(),
 		promotionService: promotionService,
@@ -42,7 +33,7 @@ func newAPIServer(promotionService PromotionService) *apiServer {
 	return s
 }
 
-// ServeHTTP serves http requests
+// ServeHTTP serves http_transport requests
 func (s *apiServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
 }
@@ -98,7 +89,7 @@ func (s *apiServer) handlePromotionsUpload() http.HandlerFunc {
 		}()
 
 		go func() {
-			err := transport.ReadPromotionsStream(r.Context(), r.Body, promotionCh)
+			err := transport.ReadPromotionsCsvStream(r.Context(), r.Body, promotionCh)
 			if err != nil {
 				errCh <- err
 			} else {
@@ -130,7 +121,7 @@ func (s *apiServer) handlePromotionsUpload() http.HandlerFunc {
 					return
 				}
 
-				if err := s.promotionService.Insert(r.Context(), domainModel); err != nil {
+				if _, err := s.promotionService.Insert(r.Context(), domainModel); err != nil {
 					s.respondWithError(err, w, r)
 					return
 				}

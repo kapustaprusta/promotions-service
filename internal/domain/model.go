@@ -36,7 +36,7 @@ func (m *PromotionModel) ID() string {
 
 // SetID sets promotion id
 func (m *PromotionModel) SetID(id string) error {
-	if err := validateID(id); err != nil {
+	if err := validatePromotionID(id); err != nil {
 		return nil
 	}
 
@@ -52,7 +52,7 @@ func (m *PromotionModel) Price() float64 {
 
 // SetPrice sets promotion price
 func (m *PromotionModel) SetPrice(price float64) error {
-	if err := validatePrice(price); err != nil {
+	if err := validatePromotionPrice(price); err != nil {
 		return nil
 	}
 
@@ -68,7 +68,7 @@ func (m *PromotionModel) CreatedAt() time.Time {
 
 // SetCreatedAt sets promotion created at
 func (m *PromotionModel) SetCreatedAt(createdAt time.Time) error {
-	if err := validateCreatedAt(createdAt); err != nil {
+	if err := validatePromotionCreatedAt(createdAt); err != nil {
 		return err
 	}
 
@@ -84,7 +84,7 @@ func (m *PromotionModel) ExpirationDate() time.Time {
 
 // SetExpirationDate sets promotion expiration date
 func (m *PromotionModel) SetExpirationDate(expirationDate time.Time) error {
-	if err := validateExpirationDate(expirationDate); err != nil {
+	if err := validatePromotionExpirationDate(expirationDate); err != nil {
 		return nil
 	}
 
