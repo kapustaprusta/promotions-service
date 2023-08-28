@@ -8,10 +8,10 @@ import (
 
 // PromotionModel declares promotion transport model
 type PromotionModel struct {
-	ID             string
-	Price          float64
+	ID             string    `json:"id"`
+	Price          float64   `json:"price"`
 	CreatedAt      time.Time `json:"-"`
-	ExpirationDate time.Time
+	ExpirationDate JSONTime  `json:"expiration_date"`
 }
 
 // DomainModel2TransportModel converts domain model to transport model
@@ -19,7 +19,7 @@ func DomainModel2TransportModel(domainModel *domain.PromotionModel) *PromotionMo
 	return &PromotionModel{
 		ID:             domainModel.ID(),
 		Price:          domainModel.Price(),
-		ExpirationDate: domainModel.ExpirationDate(),
+		ExpirationDate: JSONTime(domainModel.ExpirationDate()),
 	}
 }
 
@@ -29,6 +29,6 @@ func TransportModel2DomainModel(transportModel *PromotionModel) (*domain.Promoti
 		transportModel.ID,
 		transportModel.Price,
 		transportModel.CreatedAt,
-		transportModel.ExpirationDate,
+		time.Time(transportModel.ExpirationDate),
 	)
 }

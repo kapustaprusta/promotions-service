@@ -14,6 +14,13 @@ const (
 	timeLayout = "2006-01-02 15:04:05 -0700 MST"
 )
 
+type JSONTime time.Time
+
+func (t JSONTime) MarshalJSON() ([]byte, error) {
+	stamp := fmt.Sprintf("\"%s\"", time.Time(t).Format(timeLayout))
+	return []byte(stamp), nil
+}
+
 // ReadPromotionsCsvStream reads promotion from provided reader and sends them to chan.
 func ReadPromotionsCsvStream(ctx context.Context, reader io.Reader, outputCh chan<- *PromotionModel) error {
 	csvReader := csv.NewReader(reader)
@@ -46,10 +53,11 @@ func ReadPromotionsCsvStream(ctx context.Context, reader io.Reader, outputCh cha
 			return fmt.Errorf("failed to parse promotion: invalid price: %w", err)
 		}
 
-		promotionModel.ExpirationDate, err = time.Parse(timeLayout, promotionProps[2])
+		promotionExpirationDate, err := time.Parse(timeLayout, promotionProps[2])
 		if err != nil {
 			return fmt.Errorf("failed to parse promotion: invalid expiration date: %w", err)
 		}
+		promotionModel.ExpirationDate = JSONTime(promotionExpirationDate)
 
 		outputCh <- promotionModel
 	}
