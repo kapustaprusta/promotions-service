@@ -76,9 +76,9 @@ Response
 ```sh
 200 - OK
 {
-  "ID": "d018ef0b-dbd9-48f1-ac1a-eb4d90e57118",
-  "Price": 60.683466,
-  "ExpirationDate": "2018-08-04T05:32:31+02:00"
+  "id": "d018ef0b-dbd9-48f1-ac1a-eb4d90e57118",
+  "price": 60.683466,
+  "expiration_date": "2018-08-04 05:32:31 +0200 CEST"
 }
 
 400 - BAD REQUEST
